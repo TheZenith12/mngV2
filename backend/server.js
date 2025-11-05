@@ -15,13 +15,19 @@ import fileRoutes from './src/routes/fileRoutes.js';
 dotenv.config();
 
 const app = express();
+app.use(express.json());
+
+const allowedOrigins = [
+  "https://frontend-admin.vercel.app",
+  "https://frontend-public.vercel.app"
+];
 
 // Middleware
 app.use(cors({
-  origin: 'https://amaralt.vercel.app', // зөвшөөрөх frontend домэйн
-  credentials: true // хэрэв cookie/session ашиглаж байвал
+  origin: allowedOrigins,
+  credentials: true
 }));
-app.use(express.json());
+
 app.use('/uploads', express.static( 'public/uploads'));
 
 connectDB();

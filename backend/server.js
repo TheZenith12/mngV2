@@ -17,7 +17,10 @@ dotenv.config();
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: 'https://amaralt.vercel.app', // зөвшөөрөх frontend домэйн
+  credentials: true // хэрэв cookie/session ашиглаж байвал
+}));
 app.use(express.json());
 app.use('/uploads', express.static( 'public/uploads'));
 

@@ -2,14 +2,17 @@ import mongoose from "mongoose";
 import Resort from "../models/resortModel.js";
 import File from "../models/fileModel.js";
 import { v2 as cloudinary } from "cloudinary";
+import dotenv from "dotenv";
+
+dotenv.config(); // .env файлыг ачааллах
 
 // ============================
-// ✅ Cloudinary Config
+// ✅ Cloudinary Config (зөв хувилбар)
 // ============================
 cloudinary.config({
-  cloud_name: process.env.dl9bp4ja3,
-  api_key: process.env.HIl2RWE42Q10phihm3k20U,
-  api_secret: process.env.228483613417514,
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
 // ============================

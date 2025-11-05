@@ -1,27 +1,27 @@
 import multer from "multer";
-import path from "path";
-import fs from "fs";
+import { v2 as cloudinary } from "cloudinary";
+import { CloudinaryStorage } from "multer-storage-cloudinary";
+import dotenv from "dotenv";
 
-// 📁 Upload хадгалах зам
-const uploadPath = "public/uploads/resorts"; // ✅ 'uploads' гэж бичих нь илүү зөв, нийтлэг
+dotenv.config();
 
-// 📂 Хэрвээ хавтас байхгүй бол автоматаар үүсгэнэ
-if (!fs.existsSync(uploadPath)) {
-  fs.mkdirSync(uploadPath, { recursive: true });
-  console.log("📁 Upload folder created:", uploadPath);
-}
+// ☁️ Cloudinary тохиргоо
+const storage = new CloudinaryStorage({
+  cloudinary,
+  params: async (req, file) => {
+    // upload төрөлд үндэслэн хавтас сонгоно
+    let folder = "resorts";
+    if (file.fieldname === "videos") folder = "resorts/videos";
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, uploadPath);
-  },
-  filename: (req, file, cb) => {
-    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    cb(null, uniqueSuffix + "-" + file.originalname);
+    return {
+      folder,
+      resource_type: file.fieldname === "videos" ? "video" : "image",
+      allowed_formats: ["jpg", "png", "jpeg", "webp", "mp4"],
+      public_id: `${Date.now()}-${file.originalname.split(".")[0]}`,
+    };
   },
 });
 
-// ✅ Ерөнхий upload (default export)
 const upload = multer({ storage });
 
 export default upload;

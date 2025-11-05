@@ -1,7 +1,4 @@
 import express from "express";
-import multer from "multer";
-import path from "path";
-import { v4 as uuidv4 } from "uuid"; // uuid ашиглана
 import {
   getResorts,
   getResortById,
@@ -9,35 +6,29 @@ import {
   updateResort,
   deleteResort,
 } from "../controllers/resortController.js";
-import upload from "../middleware/upload.js";
+import upload from "../middleware/upload.js"; // Cloudinary upload middleware
 
 const router = express.Router();
 
-// ===== Multer Config =====
+// === Routes ===
 
-
-// Upload тохиргоо
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "public/uploads/resorts");
-  },
-  filename: (req, file, cb) => {
-    const uniqueName = Date.now() + "-" + uuidv4() + path.extname(file.originalname);
-    cb(null, uniqueName);
-  },
-});
-
-
-// ===== Routes =====
+// Бүх resort авах
 router.get("/", getResorts);
+
+// Нэг resort авах
 router.get("/:id", getResortById);
-router.post("/new",
+
+// Шинэ resort нэмэх
+router.post(
+  "/new",
   upload.fields([
     { name: "images", maxCount: 10 },
     { name: "videos", maxCount: 5 },
   ]),
   createResort
 );
+
+// Resort шинэчлэх
 router.put(
   "/:id",
   upload.fields([
@@ -46,6 +37,8 @@ router.put(
   ]),
   updateResort
 );
+
+// Resort устгах
 router.delete("/:id", deleteResort);
 
 export default router;

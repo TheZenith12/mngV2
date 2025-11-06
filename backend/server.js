@@ -24,7 +24,8 @@ const allowedOrigins = [
   "https://amaralt-admin.vercel.app",
   "https://amaralt.vercel.app"
 ];
-app.use(cors({ origin: allowedOrigins }));
+// Фронтэндээс ирж байгаа хүсэлтүүдийг зөвшөөрөх
+app.use(cors());
 
 // Cloudinary тохиргоо
 cloudinary.config({

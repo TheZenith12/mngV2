@@ -23,25 +23,16 @@ const allowedOrigins = [
 ];
 
 // Middleware
-app.use(
-  cors({
-    origin: [  
-      "https://amaralt-admin.vercel.app", // production frontend
-    ],
-}));
+app.use(cors({ origin: allowedOrigins }));
 
-app.use('/uploads', express.static( 'public/uploads'));
+
+app.use('/uploads', express.static(uploadDir));
+ // Cloudinary файлуудыг serve хийх
 
 connectDB();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
-// Upload фолдер үүсгэх
-const uploadDir = path.join(__dirname, 'public', 'uploads', 'resorts');
-fs.mkdirSync(uploadDir, { recursive: true });
-
-// Static файлуудыг serve хий
 
 app.use('/api/admin/resorts', resortRoutes);
 app.use("/api/admin/files", fileRoutes);

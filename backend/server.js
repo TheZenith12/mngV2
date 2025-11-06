@@ -18,15 +18,14 @@ const app = express();
 app.use(express.json());
 
 const allowedOrigins = [
-  "https://frontend-admin.vercel.app",
-  "https://frontend-public.vercel.app"
+  "https://amaralt-admin.vercel.app",
+  "https://amaralt.vercel.app"
 ];
 
 // Middleware
 app.use(
   cors({
-    origin: [
-      "http://localhost:5173",         // local frontend
+    origin: [  
       "https://amaralt-admin.vercel.app", // production frontend
     ],
 }));

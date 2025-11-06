@@ -22,14 +22,13 @@ function Login() {
         body: JSON.stringify({ email, password }),
       });
 
-      // Серверээс хариу шалгах
-      const data = await res.json();
+    if (!res.ok) {
+  const errData = await res.json();
+  setError(errData.message || `HTTP error! status: ${res.status}`);
+  return;
+}
+const data = await res.json();
 
-      if (!res.ok) {
-        setError(data.message || "Login failed");
-        setLoading(false);
-        return;
-      }
 
       // Токен хадгалах
       auth.login(data.token);

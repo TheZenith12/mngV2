@@ -22,7 +22,7 @@ function Files() {
     if (!file) return;
 
     const formData = new FormData();
-    formData.append("file", selectedFile);
+    formData.append("image", file);
 
     try {
       const res = await fetch(`${API_BASE}/api/admin/files/upload`, {

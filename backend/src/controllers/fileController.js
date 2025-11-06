@@ -102,8 +102,12 @@ export const deleteFile = async (req, res) => {
 
 export const createResort = async (req, res) => {
   try {
-   
+    console.log(req.file); // ✅ энд log хийхэд ямар өгөгдөл ирж байгааг шалгах
+    const imageUrl = req.file.path; // Cloudinary URL
+    res.status(201).json({ message: "Амжилттай", image: imageUrl });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error(error);
+    res.status(500).json({ error: error.message });
   }
 };
+

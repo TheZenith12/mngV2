@@ -23,9 +23,12 @@ const allowedOrigins = [
 ];
 
 // Middleware
-app.use(cors({
-  origin: allowedOrigins,
-  credentials: true
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173",         // local frontend
+      "https://amaralt-admin.vercel.app", // production frontend
+    ],
 }));
 
 app.use('/uploads', express.static( 'public/uploads'));

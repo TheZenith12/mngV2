@@ -20,7 +20,7 @@ export const login = async (req, res) => {
     }
 
     // 3. JWT token үүсгэнэ
-    const token = jwt.sign({ id: admin._id }, "secretkey", { expiresIn: "1d" });
+    const token = jwt.sign({ id: admin._id }, process.env.JWT_SECRET, { expiresIn: "1d" });
 
     // 4. Амжилттай хариу буцаана
     res.json({
@@ -53,7 +53,7 @@ export const register = async (req, res) => {
     const newAdmin = new Admin({ email, password: hashedPassword });
     await newAdmin.save();
 
-    res.json({ message: "Admin registered successfully" });
+    res.status(200).json({ message: "Admin registered successfully" });
   } catch (err) {
     console.error("Register error:", err);
     res.status(500).json({ message: "Server error" });

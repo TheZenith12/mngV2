@@ -19,13 +19,14 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 
-// CORS
-const allowedOrigins = [
-  "https://amaralt-admin.vercel.app",
-  "https://amaralt.vercel.app"
-];
 // Фронтэндээс ирж байгаа хүсэлтүүдийг зөвшөөрөх
-app.use(cors());
+app.use(cors({
+  origin: [
+    "https://amaralt.vercel.app",        // хэрэглэгчийн веб
+    "https://amaralt-admin.vercel.app"   // админ веб
+  ],
+  credentials: true,
+}));
 
 // Cloudinary тохиргоо
 cloudinary.config({

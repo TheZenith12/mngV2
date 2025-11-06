@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
-import { API_BASE } from "../global";
+
+const API_BASE = import.meta.env.VITE_API_URL;
 
 function EditResort() {
   const { id } = useParams();

@@ -29,6 +29,7 @@ function Login() {
 }
 const data = await res.json();
 
+console.log("1234", res.json());
 
       // Токен хадгалах
       auth.login(data.token);

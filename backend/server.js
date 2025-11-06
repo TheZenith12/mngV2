@@ -7,6 +7,7 @@ import { fileURLToPath } from 'url';
 import multer from "multer";
 import { v2 as cloudinary } from "cloudinary";
 import { CloudinaryStorage } from "multer-storage-cloudinary";
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 // Local imports
 import connectDB from './src/config/db.js';

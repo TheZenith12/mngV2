@@ -16,15 +16,21 @@ import fileRoutes from './src/routes/fileRoutes.js';
 
 dotenv.config();
 
+app.options('*', cors());
+
 const app = express();
 app.use(express.json());
 
 // Фронтэндээс ирж байгаа хүсэлтүүдийг зөвшөөрөх
+import cors from "cors";
+
 app.use(cors({
   origin: [
-    "https://amaralt.vercel.app",        // хэрэглэгчийн веб
-    "https://amaralt-admin.vercel.app"   // админ веб
+    "https://amaralt-admin.vercel.app", // админ панель
+    "https://amaralt.vercel.app"        // хэрэглэгчийн веб
   ],
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true,
 }));
 

@@ -8,7 +8,6 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: "autoUpdate",
-      includeAssets: ["favicon.ico", "icons/*.png"],
     }),
   ],
 });

@@ -26,8 +26,7 @@ import cors from "cors";
 
 app.use(cors({
   origin: [
-    "https://amaralt-admin.vercel.app", // админ панель
-    "https://amaralt.vercel.app"        // хэрэглэгчийн веб
+    "https://amaralt-admin.vercel.app"      // хэрэглэгчийн веб
   ],
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],

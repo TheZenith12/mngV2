@@ -1,10 +1,9 @@
 import React from "react";
-import { motion } from "framer-motion";
 
 export default function Hero() {
   return (
     <section
-      className="relative overflow-hidden rounded-3xl mt-4 bg-gradient-to-r from-emerald-200 via-sky-100 to-green-100 shadow-xl"
+      className="relative overflow-hidden rounded-3xl mt-4"
       style={{
         backgroundImage:
           "url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1920&q=80')",
@@ -12,18 +11,25 @@ export default function Hero() {
         backgroundPosition: "center",
       }}
     >
-      <div className="relative container mx-auto px-6 py-20 text-center bg-white/70 backdrop-blur-sm rounded-3xl">
-        <h1 className="text-5xl md:text-6xl font-extrabold text-green-800 drop-shadow-md">
+      {/* Overlay */}
+      <div className="absolute inset-0 bg-black/30 backdrop-blur-sm"></div>
+
+      {/* Text Container */}
+      <div className="relative container mx-auto px-6 py-32 text-center md:text-left max-w-3xl">
+        <h1 className="text-5xl md:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-green-700 to-emerald-400 drop-shadow-lg">
           Тавтай морил 🌿
         </h1>
 
-        <p className="mt-4 text-lg md:text-xl text-gray-700">
+        <p className="mt-4 text-lg md:text-xl text-white/90 drop-shadow-md">
           Байгаль, тайван амралт, тохилог байр
         </p>
 
-        <h2 className="text-3xl font-bold mt-10 text-gray-800">
-          🏕 Амралтын газрууд
-        </h2>
+        <a
+          href="#resorts"
+          className="mt-8 inline-block px-6 py-3 bg-green-600 text-white rounded-full shadow-lg hover:bg-green-700 transition-all duration-300"
+        >
+          🏕 Амралтын газруудыг харах
+        </a>
       </div>
     </section>
   );

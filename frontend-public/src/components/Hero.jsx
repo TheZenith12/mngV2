@@ -5,8 +5,14 @@ export default function Hero() {
   return (
     <section className="relative overflow-hidden rounded-3xl mt-4 bg-gradient-to-r from-emerald-200 via-sky-100 to-green-100 shadow-xl">
       {/* 🔹 Background animated gradient blur */}
-      <div className="absolute inset-0 bg-[url('/hero-bg.jpg')] bg-cover bg-center opacity-40 animate-slow-zoom"></div>
-
+      <div
+  className="hero"
+  style={{
+  backgroundImage: "url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1920&q=80')",
+  backgroundSize: "cover",
+  backgroundPosition: "center",
+}}
+></div>
       <div className="relative container mx-auto px-6 py-20 text-center">
         <motion.h1
           initial={{ opacity: 0, y: -30 }}

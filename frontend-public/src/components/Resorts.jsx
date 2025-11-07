@@ -72,7 +72,16 @@ function Resorts() {
 
   return (
     <div className="relative w-full bg-gradient-to-b from-green-50 via-sky-50 to-emerald-100 py-16">
-      <div className="absolute inset-0 bg-[url('/resort-bg.jpg')] bg-cover bg-center opacity-20"></div>
+     <div
+  className="hero"
+ style={{
+  backgroundImage: "url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1920&q=80')",
+  backgroundSize: "cover",
+  backgroundPosition: "center",
+}}>
+  {/* контент */}
+</div>
+
 
       <div className="relative container mx-auto px-6">
         {filteredList.length > 0 ? (

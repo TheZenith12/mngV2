@@ -11,13 +11,16 @@ function Resorts() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // 🏕️ Амралтын газруудыг авах
   async function fetchResorts() {
     setLoading(true);
     try {
       const res = await fetch(`${API_BASE}/api/admin/resorts`);
       const data = await res.json();
+      setList(data);
 
       const resorts = (data.resorts || data).map((r) => {
+        // 🖼️ Зургийн логик (array, object, string аль ч тохиолдолд)
         let imgSrc = "";
         if (Array.isArray(r.image)) {
           imgSrc = r.image[0];
@@ -48,6 +51,7 @@ function Resorts() {
     fetchResorts();
   }, []);
 
+  // 🔍 Хайлтын систем
   const filteredList = useMemo(() => {
     const term = searchTerm.trim().toLowerCase();
     if (!term) return list;
@@ -59,6 +63,7 @@ function Resorts() {
     );
   }, [searchTerm, list]);
 
+  // 🌀 Ачаалж байгаа эсвэл алдаа
   if (loading)
     return (
       <div className="text-center py-20 text-lg text-gray-600">
@@ -76,32 +81,30 @@ function Resorts() {
   return (
     <div className="relative w-full bg-gradient-to-b from-sky-50 to-green-50 py-10">
       <div className="container mx-auto px-6">
+        {/* 🏡 Амралтын газрын Grid */}
         {filteredList.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {filteredList.map((p) => (
               <article
                 key={p._id}
-                className="bg-white rounded-2xl shadow-lg hover:shadow-2xl overflow-hidden flex flex-col transition-transform transform hover:-translate-y-1 hover:scale-105 duration-300"
+                className="bg-white rounded-xl shadow hover:shadow-2xl overflow-hidden flex flex-col transition-transform hover:-translate-y-1"
               >
-                <div className="relative h-48 w-full overflow-hidden rounded-t-2xl">
-                  <img
-                    src={p.image}
-                    alt={p.name}
-                    className="w-full h-full object-cover transition-transform duration-500 transform hover:scale-110"
-                    onError={(e) => (e.currentTarget.src = "/no-image.png")}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
-                </div>
-                <div className="p-4 flex-1 flex flex-col">
-                  <h3 className="text-lg font-bold text-gray-900 text-center line-clamp-1">
-                    {p.name}
-                  </h3>
-                  <p className="mt-2 text-gray-600 text-sm text-center flex-1 line-clamp-3">
-                    {p.description || "Тайлбар байхгүй"}
-                  </p>
-                  <p className="mt-3 text-green-700 font-semibold text-center">
-                    {p.price ? `${parseInt(p.price).toLocaleString()} ₮` : "—"}
-                  </p>
+                <img
+                  src={p.image}
+                  alt={p.name}
+                  className="w-full h-48 object-cover"
+                  onError={(e) => (e.currentTarget.src = "/no-image.png")}
+                />
+               <div className="p-4 flex-1 flex flex-col">
+  <h3 className="text-lg font-semibold text-center">{p.name}</h3>
+
+  <p className="text-sm text-gray-600 mt-2 text-center flex-1 line-clamp-2">
+    {p.description || "Тайлбар байхгүй"}
+  </p>
+
+  <p className="mt-3 text-green-700 font-semibold text-center">
+    Үнэ: {p.price ? `${parseInt(p.price).toLocaleString()} ₮` : "—"}
+  </p>
                   <div className="mt-5 flex justify-center">
                     <Link
                       to={`/details/${p._id}`}
@@ -121,7 +124,7 @@ function Resorts() {
         )}
       </div>
 
-      {/* Floating Search Button */}
+      {/* 🔍 Floating Search Button */}
       <div className="fixed bottom-8 right-8 z-50">
         {!showSearch ? (
           <button

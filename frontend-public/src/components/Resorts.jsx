@@ -64,72 +64,71 @@ function Resorts() {
   }, [searchTerm, list]);
 
   // 🌀 Ачаалж байгаа эсвэл алдаа
-  if (loading)
-    return (
-      <div className="text-center py-20 text-lg text-gray-600">
-        ⏳ Мэдээлэл ачаалж байна...
-      </div>
-    );
+   if (loading)
+    return <div className="text-center py-20 text-lg text-gray-600">⏳ Мэдээлэл ачаалж байна...</div>;
 
   if (error)
-    return (
-      <div className="text-center py-20 text-red-600 text-lg">
-        ⚠️ Алдаа гарлаа: {error}
-      </div>
-    );
+    return <div className="text-center py-20 text-red-600 text-lg">⚠️ Алдаа гарлаа: {error}</div>;
 
   return (
-    <div className="relative w-full bg-gradient-to-b from-sky-50 to-green-50 py-10">
-      <div className="container mx-auto px-6">
-        {/* 🏡 Амралтын газрын Grid */}
+    <div className="relative w-full bg-gradient-to-b from-green-50 via-sky-50 to-emerald-100 py-16">
+      <div className="absolute inset-0 bg-[url('/resort-bg.jpg')] bg-cover bg-center opacity-20"></div>
+
+      <div className="relative container mx-auto px-6">
         {filteredList.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <motion.div
+            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8"
+            initial="hidden"
+            animate="visible"
+            variants={{
+              visible: { transition: { staggerChildren: 0.1 } },
+              hidden: {},
+            }}
+          >
             {filteredList.map((p) => (
-              <article
+              <motion.article
                 key={p._id}
-                className="bg-white rounded-xl shadow hover:shadow-2xl overflow-hidden flex flex-col transition-transform hover:-translate-y-1"
+                variants={{
+                  hidden: { opacity: 0, y: 30 },
+                  visible: { opacity: 1, y: 0 },
+                }}
+                className="bg-white/80 backdrop-blur-lg rounded-2xl shadow-md hover:shadow-2xl overflow-hidden flex flex-col transform transition-all duration-300 hover:-translate-y-2 hover:scale-[1.02]"
               >
                 <img
                   src={p.image}
                   alt={p.name}
-                  className="w-full h-48 object-cover"
-                  onError={(e) => (e.currentTarget.src = "/no-image.png")}
+                  className="w-full h-48 object-cover hover:scale-105 transition-transform duration-500"
+                  onError={(e) => (e.currentTarget.src = '/no-image.png')}
                 />
-               <div className="p-4 flex-1 flex flex-col">
-  <h3 className="text-lg font-semibold text-center">{p.name}</h3>
-
-  <p className="text-sm text-gray-600 mt-2 text-center flex-1 line-clamp-2">
-    {p.description || "Тайлбар байхгүй"}
-  </p>
-
-  <p className="mt-3 text-green-700 font-semibold text-center">
-    Үнэ: {p.price ? `${parseInt(p.price).toLocaleString()} ₮` : "—"}
-  </p>
+                <div className="p-5 flex-1 flex flex-col">
+                  <h3 className="text-lg font-semibold text-green-800 text-center">{p.name}</h3>
+                  <p className="text-sm text-gray-600 mt-2 text-center flex-1 line-clamp-2">{p.description || "Тайлбар байхгүй"}</p>
+                  <p className="mt-3 text-green-700 font-semibold text-center">
+                    Үнэ: {p.price ? `${parseInt(p.price).toLocaleString()} ₮` : "—"}
+                  </p>
                   <div className="mt-5 flex justify-center">
                     <Link
                       to={`/details/${p._id}`}
-                      className="px-5 py-2 bg-green-600 text-white rounded-full font-medium hover:bg-green-700 transition-transform hover:scale-105 shadow-md"
+                      className="px-5 py-2 bg-gradient-to-r from-green-600 to-emerald-500 text-white rounded-full font-medium shadow-md hover:shadow-lg hover:scale-110 transition-transform duration-300"
                     >
                       Дэлгэрэнгүй үзэх
                     </Link>
                   </div>
                 </div>
-              </article>
+              </motion.article>
             ))}
-          </div>
+          </motion.div>
         ) : (
-          <p className="text-center text-gray-600 mt-10 text-lg">
-            😕 Тохирох амралт олдсонгүй.
-          </p>
+          <p className="text-center text-gray-600 mt-10 text-lg">😕 Тохирох амралт олдсонгүй.</p>
         )}
       </div>
 
-      {/* 🔍 Floating Search Button */}
+      {/* Floating search button */}
       <div className="fixed bottom-8 right-8 z-50">
         {!showSearch ? (
           <button
             onClick={() => setShowSearch(true)}
-            className="p-4 bg-green-600 text-white rounded-full shadow-lg hover:scale-110 transition-transform"
+            className="p-4 bg-green-600 text-white rounded-full shadow-xl hover:scale-110 transition-transform duration-300"
           >
             <Search className="w-6 h-6" />
           </button>

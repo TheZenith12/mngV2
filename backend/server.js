@@ -7,7 +7,6 @@ import { fileURLToPath } from 'url';
 import multer from "multer";
 import { v2 as cloudinary } from "cloudinary";
 import { CloudinaryStorage } from "multer-storage-cloudinary";
-import { SpeedInsights } from "@vercel/speed-insights/next"
 
 // Local imports
 import connectDB from './src/config/db.js';
@@ -17,18 +16,11 @@ import fileRoutes from './src/routes/fileRoutes.js';
 
 dotenv.config();
 
-app.options('*', cors());
-
 const app = express();
+
 app.use(express.json());
-
-// Фронтэндээс ирж байгаа хүсэлтүүдийг зөвшөөрөх
-import cors from "cors";
-
 app.use(cors({
-  origin: [
-    "https://amaralt-admin.vercel.app"      // хэрэглэгчийн веб
-  ],
+  origin: ["https://amaralt-admin.vercel.app"],
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true,
@@ -43,10 +35,10 @@ cloudinary.config({
 
 // Multer Storage Cloudinary-д upload хийхээр тохируулна
 const storage = new CloudinaryStorage({
-  cloudinary: cloudinary,
+  cloudinary,
   params: {
-    folder: "resorts", // Cloudinary-д үүсгэгдэх folder
-    allowed_formats: ["jpg", "png", "jpeg"],
+    folder: "resorts",
+    allowedFormats: ["jpg", "png", "jpeg"],
   },
 });
 
@@ -55,14 +47,11 @@ const parser = multer({ storage });
 // Файл upload endpoint
 app.post("/api/admin/upload", parser.single("image"), (req, res) => {
   try {
-    res.json({ imageUrl: req.file.path }); // Cloudinary URL-г буцаана
+    res.json({ imageUrl: req.file.path });
   } catch (error) {
     res.status(500).json({ message: "Upload failed", error });
   }
 });
-
-// MongoDB холболт
-connectDB();
 
 // __dirname тохиргоо
 const __filename = fileURLToPath(import.meta.url);
@@ -84,6 +73,17 @@ app.get('/', (req, res) => {
   res.send('Backend server is running!');
 });
 
-// Сервер эхлүүлэх
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`✅ Server started on port ${PORT}`));
+
+// Сервер эхлүүлэх
+const startServer = async () => {
+  try {
+    await connectDB();
+    app.listen(PORT, () => console.log(`✅ Server started on port ${PORT}`));
+  } catch (err) {
+    console.error("❌ MongoDB connection failed:", err);
+    process.exit(1);
+  }
+};
+
+startServer();

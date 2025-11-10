@@ -11,8 +11,6 @@ import AddResort from './pages/AddResorts'
 function App() {
   return (
     <BrowserRouter>
-      <div className="min-h-screen flex bg-gray-50">
-        <Sidebar />
         <div className="flex-1 flex flex-col">
           <Topbar />
           <main className="p-6">
@@ -26,7 +24,6 @@ function App() {
             </Routes>
           </main>
         </div>
-      </div>
     </BrowserRouter>
   )
 }

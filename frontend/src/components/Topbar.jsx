@@ -13,7 +13,7 @@ function Topbar() {
     navigate("/login");
   }
 
-  // Sidebar link-үүдийг Topbar-д шилжүүлж байна
+  
   const navItems = [
     { to: "/resorts", label: "Resorts", icon: <List size={16} /> },
     { to: "/resorts/new", label: "Add Resort", icon: <PlusCircle size={16} /> },

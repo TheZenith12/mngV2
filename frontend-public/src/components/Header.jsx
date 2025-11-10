@@ -3,16 +3,16 @@ import { Link } from "react-router-dom";
 
 export default function Header() {
   return (
-    <header className="bg-green-600 text-white shadow-md py-4">
+    <header className="bg-gradient-to-r from-green-200 via-green-400 to-green-600 text-white shadow-md py-4">
       <div className="container mx-auto flex justify-between items-center px-6">
         <h1 className="text-2xl font-bold">🌿 AmraltinGazar</h1>
         <nav className="space-x-6">
           <Link
-          to="/About"
-          style={{ color: "white", textDecoration: "none", fontWeight: "bold" }}
-        >
-          Бидний тухай
-        </Link>
+            to="/About"
+            className="text-white font-bold hover:underline hover:text-green-100 transition"
+          >
+            Бидний тухай
+          </Link>
         </nav>
       </div>
     </header>

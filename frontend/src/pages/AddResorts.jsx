@@ -41,6 +41,11 @@ export default function AddResort() {
     setImagePreviews((prev) => prev.filter((_, i) => i !== index));
   };
 
+  const removeVideo = (index) => {
+    setVideos((prev) => prev.filter((_, i) => i !== index));
+    setVideoPreviews((prev) => prev.filter((_, i) => i !== index));
+  };
+
   // 📨 Submit
   const handleSubmit = async (e) => {
     e.preventDefault();

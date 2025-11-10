@@ -48,13 +48,41 @@ const storage = new CloudinaryStorage({
 const parser = multer({ storage });
 
 // Файл upload endpoint
-app.post("/api/admin/upload", parser.single("image"), (req, res) => {
-  try {
-    res.json({ imageUrl: req.file.path });
-  } catch (error) {
-    res.status(500).json({ message: "Upload failed", error });
+app.post(
+  "/api/admin/upload",
+  parser.fields([
+    { name: "images", maxCount: 10 },
+    { name: "videos", maxCount: 5 },
+  ]),
+  async (req, res) => {
+    try {
+      const uploadedImages = req.files["images"] || [];
+      const uploadedVideos = req.files["videos"] || [];
+
+      // Зураг upload хийх
+      const imageUrls = await Promise.all(
+        uploadedImages.map((file) =>
+          cloudinary.uploader.upload(file.path, { folder: "resorts" })
+        )
+      );
+
+      // Видео upload хийх (resource_type = "video" заавал!)
+      const videoUrls = await Promise.all(
+        uploadedVideos.map((file) =>
+          cloudinary.uploader.upload(file.path, {
+            resource_type: "video",
+            folder: "resorts",
+          })
+        )
+      );
+
+      res.json({ images: imageUrls.map((r) => r.secure_url), videos: videoUrls.map((r) => r.secure_url) });
+    } catch (error) {
+      res.status(500).json({ message: "Upload failed", error });
+    }
   }
-});
+);
+
 
 // __dirname тохиргоо
 const __filename = fileURLToPath(import.meta.url);

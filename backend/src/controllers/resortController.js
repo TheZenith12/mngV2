@@ -32,6 +32,7 @@ export const getResorts = async (req, res) => {
       {
         $addFields: {
           image: { $arrayElemAt: ["$files.images", 0] },
+          video: { $arrayElemAt: ["$files.videos", 0] },
         },
       },
       {
@@ -75,7 +76,7 @@ export const createResort = async (req, res) => {
     const newResort = new Resort({ name, description, price, location });
     const savedResort = await newResort.save();
 
-    // Файл хадгалах (Cloudinary URL)
+    // Файл хадгалах (Cloudinary URL)  nb
     if (req.files && (req.files.images || req.files.videos)) {
       const images = req.files.images ? req.files.images.map((f) => f.path) : [];
       const videos = req.files.videos ? req.files.videos.map((f) => f.path) : [];

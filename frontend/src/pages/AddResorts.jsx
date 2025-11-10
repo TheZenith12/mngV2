@@ -10,35 +10,35 @@ export default function AddResort() {
     price: "",
     location: "",
   });
+  const [images, setImages] = useState([]);
+  const [videos, setVideos] = useState([]);
   const [imagePreviews, setImagePreviews] = useState([]);
   const [videoPreviews, setVideoPreviews] = useState([]);
-  const [previewUrls, setPreviewUrls] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  // 🧾 Text input
   const handleChange = (e) =>
     setForm({ ...form, [e.target.name]: e.target.value });
 
   // 🖼️ Олон зураг сонгох
-const handleImages = (e) => {
-  const files = Array.from(e.target.files);
-  setImages((prev) => [...prev, ...files]);
-  const newPreviews = files.map((file) => URL.createObjectURL(file));
-  setImagePreviews((prev) => [...prev, ...newPreviews]);
-};
+  const handleImages = (e) => {
+    const files = Array.from(e.target.files);
+    setImages((prev) => [...prev, ...files]);
+    const newPreviews = files.map((file) => URL.createObjectURL(file));
+    setImagePreviews((prev) => [...prev, ...newPreviews]);
+  };
 
-// 🎥 Олон видео
-const handleVideos = (e) => {
-  const files = Array.from(e.target.files);
-  setVideos((prev) => [...prev, ...files]);
-  const newPreviews = files.map((file) => URL.createObjectURL(file));
-  setVideoPreviews((prev) => [...prev, ...newPreviews]);
-};
+  // 🎥 Олон видео сонгох
+  const handleVideos = (e) => {
+    const files = Array.from(e.target.files);
+    setVideos((prev) => [...prev, ...files]);
+    const newPreviews = files.map((file) => URL.createObjectURL(file));
+    setVideoPreviews((prev) => [...prev, ...newPreviews]);
+  };
 
   // 🖼️ Preview-с зураг устгах
   const removeImage = (index) => {
     setImages((prev) => prev.filter((_, i) => i !== index));
-    setPreviewUrls((prev) => prev.filter((_, i) => i !== index));
+    setImagePreviews((prev) => prev.filter((_, i) => i !== index));
   };
 
   // 📨 Submit
@@ -63,7 +63,8 @@ const handleVideos = (e) => {
       setForm({ name: "", description: "", price: "", location: "" });
       setImages([]);
       setVideos([]);
-      setPreviewUrls([]);
+      setImagePreviews([]);
+      setVideoPreviews([]);
     } catch (err) {
       console.error("Алдаа:", err);
       alert("Амралтын газар нэмэхэд алдаа гарлаа!");
@@ -76,7 +77,10 @@ const handleVideos = (e) => {
     <div className="p-6 max-w-3xl mx-auto">
       <h2 className="text-2xl font-semibold mb-4">Амралтын газар нэмэх</h2>
 
-      <form onSubmit={handleSubmit} className="space-y-4 bg-white p-4 rounded shadow">
+      <form
+        onSubmit={handleSubmit}
+        className="space-y-4 bg-white p-4 rounded shadow"
+      >
         <input
           name="name"
           placeholder="Нэр"
@@ -107,12 +111,12 @@ const handleVideos = (e) => {
           className="border w-full px-3 py-2 rounded"
         />
 
-
+        {/* 🖼️ Зураг оруулах хэсэг */}
         <div>
           <label className="font-medium">🖼️ Олон зураг сонгох</label>
           <input type="file" multiple accept="image/*" onChange={handleImages} />
           <div className="grid grid-cols-4 gap-2 mt-2">
-            {previewUrls.map((url, i) => (
+            {imagePreviews.map((url, i) => (
               <div key={i} className="relative">
                 <img
                   src={url}
@@ -131,10 +135,20 @@ const handleVideos = (e) => {
           </div>
         </div>
 
-
+        {/* 🎥 Видео хэсэг */}
         <div>
           <label className="font-medium">🎥 Бичлэгүүд</label>
           <input type="file" multiple accept="video/*" onChange={handleVideos} />
+          <div className="grid grid-cols-3 gap-2 mt-2">
+            {videoPreviews.map((url, i) => (
+              <video
+                key={i}
+                src={url}
+                controls
+                className="w-32 h-24 object-cover rounded border"
+              />
+            ))}
+          </div>
         </div>
 
         <button

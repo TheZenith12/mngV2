@@ -125,39 +125,40 @@ function Resorts() {
       )}
     </div>
 
-      {/* 🔍 Floating Search Button */}
-      <div className="fixed bottom-8 right-8 z-50">
-        {!showSearch ? (
-          <button
-            onClick={() => setShowSearch(true)}
-            className="p-4 bg-green-600 text-white rounded-full shadow-lg hover:scale-110 transition-transform"
-          >
-            <Search className="w-6 h-6" />
-          </button>
-        ) : (
-          <div className="bg-white p-4 rounded-2xl shadow-2xl flex items-center gap-2 animate-slide-left">
-            <input
-              type="text"
-              placeholder="Хайх..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="border border-gray-300 rounded-lg px-3 py-2 w-64 focus:ring-2 focus:ring-green-400 outline-none"
-            />
-            <button
-              onClick={() => setSearchTerm("")}
-              className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
-            >
-              Бүгдийг харах
-            </button>
-            <button
-              onClick={() => setShowSearch(false)}
-              className="ml-2 text-gray-500 hover:text-gray-700 text-xl"
-            >
-              ✖
-            </button>
-          </div>
-        )}
-      </div>
+      <div className="fixed bottom-4 right-4 z-50 sm:bottom-8 sm:right-8">
+  {!showSearch ? (
+    <button
+      onClick={() => setShowSearch(true)}
+      className="p-3 sm:p-4 bg-green-600 text-white rounded-full shadow-lg hover:scale-110 transition-transform"
+    >
+      <Search className="w-5 h-5 sm:w-6 sm:h-6" />
+    </button>
+  ) : (
+    <div className="bg-white p-3 sm:p-4 rounded-2xl shadow-2xl flex items-center gap-2 animate-slide-left w-[90vw] sm:w-auto">
+      <input
+        type="text"
+        placeholder="Хайх..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        className="border border-gray-300 rounded-lg px-3 py-2 flex-1 focus:ring-2 focus:ring-green-400 outline-none"
+      />
+      <button
+        onClick={() => setSearchTerm("")}
+        className="px-3 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm sm:text-base"
+      >
+        Бүгдийг харах
+      </button>
+      <button
+        onClick={() => setShowSearch(false)}
+        className="ml-2 text-gray-500 hover:text-gray-700 text-lg sm:text-xl"
+      >
+        ✖
+      </button>
+    </div>
+  )}
+</div>
+
+
     </div>
   );
 }

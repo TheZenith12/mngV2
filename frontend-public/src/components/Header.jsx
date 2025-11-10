@@ -7,12 +7,6 @@ export default function Header() {
       <div className="container mx-auto flex justify-between items-center px-6">
         <h1 className="text-2xl font-bold">🌿 AmraltinGazar</h1>
         <nav className="space-x-6">
-          <Link
-            to="/About"
-            className="text-white font-bold hover:underline hover:text-green-100 transition"
-          >
-            Бидний тухай
-          </Link>
         </nav>
       </div>
     </header>

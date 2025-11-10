@@ -23,7 +23,7 @@ router.post(
   "/new",
   upload.fields([
     { name: "images", maxCount: 10 },
-    { name: "videos", maxCount: 5 },
+    { name: "videos", maxCount: 10 },
   ]),
   createResort
 );
@@ -33,7 +33,7 @@ router.put(
   "/:id",
   upload.fields([
     { name: "images", maxCount: 10 },
-    { name: "videos", maxCount: 5 },
+    { name: "videos", maxCount: 10 },
   ]),
   updateResort
 );

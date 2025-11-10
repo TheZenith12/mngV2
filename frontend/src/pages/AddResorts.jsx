@@ -10,8 +10,8 @@ export default function AddResort() {
     price: "",
     location: "",
   });
-  const [images, setImages] = useState([]);
-  const [videos, setVideos] = useState([]);
+  const [imagePreviews, setImagePreviews] = useState([]);
+  const [videoPreviews, setVideoPreviews] = useState([]);
   const [previewUrls, setPreviewUrls] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -20,15 +20,20 @@ export default function AddResort() {
     setForm({ ...form, [e.target.name]: e.target.value });
 
   // 🖼️ Олон зураг сонгох
-  const handleImages = (e) => {
-    const files = Array.from(e.target.files);
-    setImages((prev) => [...prev, ...files]); // шинэ зураг нэмэх
-    const newPreviews = files.map((file) => URL.createObjectURL(file));
-    setPreviewUrls((prev) => [...prev, ...newPreviews]);
-  };
+const handleImages = (e) => {
+  const files = Array.from(e.target.files);
+  setImages((prev) => [...prev, ...files]);
+  const newPreviews = files.map((file) => URL.createObjectURL(file));
+  setImagePreviews((prev) => [...prev, ...newPreviews]);
+};
 
-  // 🎥 Олон видео
-  const handleVideos = (e) => setVideos([...e.target.files]);
+// 🎥 Олон видео
+const handleVideos = (e) => {
+  const files = Array.from(e.target.files);
+  setVideos((prev) => [...prev, ...files]);
+  const newPreviews = files.map((file) => URL.createObjectURL(file));
+  setVideoPreviews((prev) => [...prev, ...newPreviews]);
+};
 
   // 🖼️ Preview-с зураг устгах
   const removeImage = (index) => {

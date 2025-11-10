@@ -78,7 +78,7 @@ function Resorts() {
       </div>
     );
 
-return (
+  return (
   <div className="relative w-full bg-gradient-to-b from-sky-50 to-green-50 py-10">
     <div className="container mx-auto px-6">
       {/* 🏡 Амралтын газрын Grid */}
@@ -124,8 +124,6 @@ return (
         </p>
       )}
     </div>
-  </div>
-);
 
       {/* 🔍 Floating Search Button */}
       <div className="fixed bottom-8 right-8 z-50">

@@ -15,8 +15,7 @@ function Resorts() {
       const res = await fetch(`${API_BASE}/api/admin/resorts`);
       if (!res.ok) throw new Error("Failed to fetch resorts");
       const data = await res.json();
-      console.log("data:", data);
-      setList(data.resorts || data); // хэрэв backend data.resorts буцаадаг бол
+      setList(data.resorts || data);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -30,7 +29,6 @@ function Resorts() {
 
   // 🔹 Resort устгах
   async function removeResort(id) {
-    console.log("Deleting ID:", id);
     if (!confirm("Та энэ амралтын газрыг устгахдаа итгэлтэй байна уу?")) return;
     try {
       const res = await fetch(`${API_BASE}/api/admin/resorts/${id}`, {
@@ -44,60 +42,65 @@ function Resorts() {
   }
 
   return (
-    <div>
-      <div className="flex items-center justify-between mb-4">
-        <h2 className="text-xl font-semibold">🏕 Амралтын газрууд</h2>
+    <div className="p-3 sm:p-6">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 gap-2">
+        <h2 className="text-xl font-semibold text-gray-800 text-center sm:text-left">
+          🏕 Амралтын газрууд
+        </h2>
         <Link
           to="/resorts/new"
-          className="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700"
+          className="px-4 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 transition text-center"
         >
           + Add Resort
         </Link>
       </div>
 
-      {loading && <div>Loading resorts...</div>}
-      {error && <div className="text-red-600">{error}</div>}
+      {loading && <div className="text-center py-6">Loading resorts...</div>}
+      {error && <div className="text-center text-red-600 py-4">{error}</div>}
 
-      <div className="space-y-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {list.map((r) => (
           <div
             key={r._id}
-            className="p-4 bg-white rounded-lg shadow flex justify-between items-start"
+            className="bg-white rounded-xl shadow-sm hover:shadow-md transition p-3 flex flex-col"
           >
-            <div className="flex gap-4">
-              <img
-                src={r.image && r.image.length > 0 ? `${API_BASE}${r.image[0]}` : "/placeholder.jpg"}
-                //src={`${API_BASE.replace(/\/$/, "")}${r.image[0]}`}    
-                alt={r.name}
-                className="w-28 h-20 rounded object-cover"
-              />
-              <div>
-                <div className="font-semibold text-lg">{r.name}</div>
-                <div className="text-gray-600 text-sm mb-1">
-                  {r.description || "No description"}
-                </div>
-                <div className="text-gray-800 text-sm">
-                  💰 Үнэ:{" "}
-                  <span className="font-semibold">
-                    {r.price ? `${r.price} ₮` : "—"}
-                  </span>
-                </div>
-                <div className="text-gray-800 text-sm">
-                  📍 Байршил: {r.location || "—"}
-                </div>
+            <img
+              src={
+                r.image && r.image.length > 0
+                  ? `${API_BASE}${r.image[0]}`
+                  : "/placeholder.jpg"
+              }
+              alt={r.name}
+              className="w-full h-40 sm:h-32 object-cover rounded-lg mb-3"
+            />
+            <div className="flex-1">
+              <div className="font-semibold text-lg text-gray-800 mb-1">
+                {r.name}
+              </div>
+              <div className="text-gray-600 text-sm mb-2 line-clamp-2">
+                {r.description || "No description"}
+              </div>
+              <div className="text-sm text-gray-700 mb-1">
+                💰 Үнэ:{" "}
+                <span className="font-semibold">
+                  {r.price ? `${r.price} ₮` : "—"}
+                </span>
+              </div>
+              <div className="text-sm text-gray-700">
+                📍 Байршил: {r.location || "—"}
               </div>
             </div>
 
-            <div className="flex flex-col gap-2">
+            <div className="flex justify-between sm:justify-end gap-2 mt-3">
               <Link
                 to={`/resorts/edit/${r._id}`}
-                className="px-2 py-1 border rounded text-sm hover:bg-gray-50"
+                className="flex-1 sm:flex-none px-3 py-1.5 border border-gray-300 rounded text-sm text-gray-700 hover:bg-gray-50 text-center"
               >
                 ✏️ Edit
               </Link>
               <button
                 onClick={() => removeResort(r._id)}
-                className="px-2 py-1 border rounded text-sm text-red-600 hover:bg-red-50"
+                className="flex-1 sm:flex-none px-3 py-1.5 border border-red-400 rounded text-sm text-red-600 hover:bg-red-50 text-center"
               >
                 🗑 Delete
               </button>
@@ -106,7 +109,9 @@ function Resorts() {
         ))}
 
         {!loading && list.length === 0 && (
-          <div className="text-gray-500">No resorts found.</div>
+          <div className="text-gray-500 text-center col-span-full py-6">
+            No resorts found.
+          </div>
         )}
       </div>
     </div>

@@ -12,17 +12,21 @@ export default function Hero() {
       }}
     >
       {/* Overlay */}
-      <div className="absolute inset-0 bg-black/30 backdrop-blur-sm"></div>
+      <div className="absolute inset-0 bg-white/30 backdrop-blur-sm"></div>
 
       {/* Text Container */}
-      <div className="relative container mx-auto px-6 py-32 text-center md:text-left max-w-3xl">
+      <div className="relative container mx-auto px-6 py-32 text-center max-w-3xl">
         <h1 className="text-5xl md:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-green-700 to-emerald-400 drop-shadow-lg">
           Тавтай морил 🌿
         </h1>
 
-        <p className="mt-4 text-lg md:text-xl text-white/90 drop-shadow-md">
+        <p className="mt-4 text-lg md:text-xl text-gray-800/90 drop-shadow-md">
           Байгаль, тайван амралт, тохилог байр
         </p>
+
+        <h2 className="text-3xl font-bold mt-10 text-gray-700 drop-shadow-md">
+          🏕 Амралтын газрууд
+        </h2>
 
         <a
           href="#resorts"

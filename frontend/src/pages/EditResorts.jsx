@@ -185,12 +185,13 @@ const handleSubmit = async (e) => {
     {previewUrls.map((url, i) => (
       <div key={i} className="relative">
         {/* Шинэ зурагны preview */}
-        <img
-          src={`${API_BASE}${image}`}
-          alt={`preview-${i}`}
-          className="w-24 h-24 object-cover rounded border"
-          onError={(e) => (e.currentTarget.src = '/no-image.png')}
-        />
+       <img
+  src={img.startsWith("http") ? img : `${API_BASE}${img}`}
+  alt=""
+  className="w-24 h-24 object-cover rounded border"
+  onError={(e) => (e.currentTarget.src = "/no-image.png")}
+/>
+
         
         {/* Устгах товч */}
         <button
@@ -222,7 +223,11 @@ const handleSubmit = async (e) => {
             e.currentTarget.poster = '/no-video.png'; // fallback зураг
           }}
         >
-          <source src={`${API_BASE}${vid}`} type="video/mp4" />
+          <source
+  src={vid.startsWith("http") ? vid : `${API_BASE}${vid}`}
+  type="video/mp4"
+/>
+
           Таны хөтөч энэ бичлэгийг тоглуулж чадахгүй байна.
         </video>
 

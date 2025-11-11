@@ -17,20 +17,29 @@ dotenv.config();
 
 const app = express();
 
-const corsOptions = {
-  origin: [
-    "https://amaralt-admin.vercel.app",
-    "https://amaralt.vercel.app"
-  ],
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"],
-  credentials: true,
-};
+const allowedOrigins = [
+  "https://amaralt-admin.vercel.app",
+  "https://amaralt.vercel.app"
+];
 
-app.use(cors(corsOptions));
-app.options("*", cors(corsOptions)); // энэ мөрийг ингэж тодорхой болго
-app.use(express.json());
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      // Local dev үед origin null байж болох тул зөвшөөрнө
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("CORS not allowed"));
+      }
+    },
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 
+// ✅ Preflight OPTIONS хариу
+app.options("*", cors());
 // Cloudinary тохиргоо
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,

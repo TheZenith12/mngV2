@@ -46,6 +46,18 @@ export default function AddResort() {
     setVideoPreviews((prev) => prev.filter((_, i) => i !== index));
   };
 
+   const uploadToCloudinary = async (file) => {
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", "YOUR_PRESET"); // Cloudinary → Upload Preset
+    const res = await fetch(
+      "https://api.cloudinary.com/v1_1/dl9bp4ja3/image/upload",
+      { method: "POST", body: formData }
+    );
+    const data = await res.json();
+    return data.secure_url; // Cloudinary линк буцаана
+  };
+
   // 📨 Submit
   const handleSubmit = async (e) => {
     e.preventDefault();

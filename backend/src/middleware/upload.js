@@ -30,10 +30,11 @@ const storage = new CloudinaryStorage({
   },
 });
 
+
 // ✅ Multer middleware
 const upload = multer({
   storage: storage,
-  limits: { fileSize: 50 * 1024 * 1024 }, // 50MB
+  limits: { fileSize: 500 * 1024 * 1024 }, // 50MB
 });
 
 export default upload;

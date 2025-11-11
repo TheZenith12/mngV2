@@ -39,20 +39,28 @@ cloudinary.config({
 // Multer Storage Cloudinary-д upload хийхээр тохируулна
 const storage = new CloudinaryStorage({
   cloudinary,
-  params: {
-    folder: "resorts",
-    allowedFormats: ["jpg", "png", "jpeg"],
+  params: (req, file) => {
+    if (file.mimetype.startsWith("video/")) {
+      return { folder: "resorts/videos", resource_type: "video" };
+    } else {
+      return { folder: "resorts/images", allowedFormats: ["jpg", "png", "jpeg"] };
+    }
   },
 });
 
-const parser = multer({ storage });
+
+const parser = multer({ 
+  storage,
+  limits: { fileSize: 500 * 1024 * 1024 } // 500MB max
+});
+
 
 // Файл upload endpoint
 app.post(
   "/api/admin/upload",
   parser.fields([
     { name: "images", maxCount: 10 },
-    { name: "videos", maxCount: 5 },
+    { name: "videos", maxCount: 10 },
   ]),
   async (req, res) => {
     try {
@@ -70,7 +78,6 @@ app.post(
       const videoUrls = await Promise.all(
         uploadedVideos.map((file) =>
           cloudinary.uploader.upload(file.path, {
-            resource_type: "video",
             folder: "resorts",
           })
         )

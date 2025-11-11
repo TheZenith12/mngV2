@@ -186,7 +186,7 @@ const handleSubmit = async (e) => {
       <div key={i} className="relative">
         {/* Шинэ зурагны preview */}
         <img
-          src={url}
+          src={image.startsWith('http') ? image : `${API_BASE}${image}`}
           alt={`preview-${i}`}
           className="w-24 h-24 object-cover rounded border"
           onError={(e) => (e.currentTarget.src = '/no-image.png')}

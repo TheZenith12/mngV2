@@ -4,9 +4,6 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import multer from "multer";
-import { v2 as cloudinary } from "cloudinary";
-import { CloudinaryStorage } from "multer-storage-cloudinary";
 
 // Local imports
 import connectDB from './src/config/db.js';
@@ -28,30 +25,14 @@ app.use(cors({
   allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true,
 }));
+app.options("*", cors()); // бүх OPTIONS хүсэлтэнд CORS зөвшөөрнө
+
 
 // Cloudinary тохиргоо
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
-});
-
-// Multer Storage Cloudinary-д upload хийхээр тохируулна
-const storage = new CloudinaryStorage({
-  cloudinary,
-  params: (req, file) => {
-    if (file.mimetype.startsWith("video/")) {
-      return { folder: "resorts/videos", resource_type: "video" };
-    } else {
-      return { folder: "resorts/images", allowedFormats: ["jpg", "png", "jpeg"] };
-    }
-  },
-});
-
-
-const parser = multer({ 
-  storage,
-  limits: { fileSize: 500 * 1024 * 1024 } // 500MB max
 });
 
 

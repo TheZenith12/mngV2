@@ -189,7 +189,7 @@ const handleSubmit = async (e) => {
   src={img.startsWith("http") ? img : `${API_BASE}${img}`}
   alt=""
   className="w-24 h-24 object-cover rounded border"
-  onError={(e) => (e.currentTarget.src = "/no-image.png")}
+  onError={(e) => (e.currentTarget.src = `${API_BASE}${img}`)}
 />
 
         

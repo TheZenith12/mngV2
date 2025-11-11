@@ -52,7 +52,6 @@ export const uploadFile = async (req, res) => {
 
     await newFile.save();
 
-
     await Resort.findByIdAndUpdate(resortId, { $push: { files: newFile._id } });
 
     res.status(201).json({

@@ -182,7 +182,7 @@ const handleSubmit = async (e) => {
   <input type="file" multiple accept="image/*" onChange={handleNewImages} />
 
   <div className="flex flex-wrap gap-2 mt-2">
-    {previewUrls.map((url, i) => (
+    {previewUrls.map((img, i) => (
       <div key={i} className="relative">
         {/* Шинэ зурагны preview */}
        <img

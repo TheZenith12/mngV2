@@ -177,31 +177,67 @@ const handleSubmit = async (e) => {
         </div>
 
 
-        <div>
-          <h3 className="font-medium mt-3 mb-1">Шинэ зургууд</h3>
-          <input type="file" multiple accept="image/*" onChange={handleNewImages} />
-          <div className="flex flex-wrap gap-2 mt-2">
-            {previewUrls.map((url, i) => (
-              <div key={i} className="relative">
-                <img src={url} alt="" className="w-24 h-24 object-cover rounded" />
-                <button type="button" onClick={() => removeNewImage(i)} className="absolute top-0 right-0 bg-red-500 text-white text-xs px-1 rounded">✕</button>
-              </div>
-            ))}
-          </div>
-        </div>
+<div>
+  <h3 className="font-medium mt-3 mb-1">Шинэ зургууд</h3>
+  <input type="file" multiple accept="image/*" onChange={handleNewImages} />
+
+  <div className="flex flex-wrap gap-2 mt-2">
+    {previewUrls.map((url, i) => (
+      <div key={i} className="relative">
+        {/* Шинэ зурагны preview */}
+        <img
+          src={url}
+          alt={`preview-${i}`}
+          className="w-24 h-24 object-cover rounded border"
+          onError={(e) => (e.currentTarget.src = '/no-image.png')}
+        />
+        
+        {/* Устгах товч */}
+        <button
+          type="button"
+          onClick={() => removeNewImage(i)}
+          className="absolute top-0 right-0 bg-red-500 text-white text-xs px-1 rounded"
+        >
+          ✕
+        </button>
+      </div>
+    ))}
+  </div>
+</div>
+
 
    
         <div>
-          <h3 className="font-medium mt-3 mb-1">Бичлэгүүд</h3>
-          <div className="flex flex-wrap gap-2">
-            {existingVideos.map((vid, i) => (
-              <div key={i} className="relative">
-                <video width="120" height="90" controls src={`${API_BASE}${vid}`} className="rounded" />
-                <button type="button" onClick={() => removeExistingVideo(i)} className="absolute top-0 right-0 bg-red-500 text-white text-xs px-1 rounded">✕</button>
-              </div>
-            ))}
-          </div>
-        </div>
+  <h3 className="font-medium mt-3 mb-1">Бичлэгүүд</h3>
+
+  <div className="flex flex-wrap gap-2 mt-2">
+    {existingVideos.map((vid, i) => (
+      <div key={i} className="relative">
+        <video
+          width="120"
+          height="90"
+          controls
+          className="rounded border"
+          onError={(e) => {
+            e.currentTarget.poster = '/no-video.png'; // fallback зураг
+          }}
+        >
+          <source src={`${API_BASE}${vid}`} type="video/mp4" />
+          Таны хөтөч энэ бичлэгийг тоглуулж чадахгүй байна.
+        </video>
+
+        {/* Устгах товч */}
+        <button
+          type="button"
+          onClick={() => removeExistingVideo(i)}
+          className="absolute top-0 right-0 bg-red-500 text-white text-xs px-1 rounded"
+        >
+          ✕
+        </button>
+      </div>
+    ))}
+  </div>
+</div>
 
         <div>
           <label className="block font-medium mb-1 mt-3">Шинэ бичлэг оруулах</label>

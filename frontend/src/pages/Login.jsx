@@ -28,7 +28,6 @@ function Login() {
   setError(errData.message || `HTTP error! status: ${res.status}`);
   return;
 }
-const data = await res.json();
 
 console.log("1234", res.json());
 

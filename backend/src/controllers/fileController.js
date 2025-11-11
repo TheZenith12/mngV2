@@ -102,12 +102,26 @@ export const deleteFile = async (req, res) => {
 
 export const createResort = async (req, res) => {
   try {
-    console.log(req.file); // ✅ энд log хийхэд ямар өгөгдөл ирж байгааг шалгах
-    const imageUrl = req.file.path; // Cloudinary URL
-    res.status(201).json({ message: "Амжилттай", image: imageUrl });
+    // Cloudinary-аас ирсэн images & videos
+    const images = req.files["images"]?.map(f => f.path) || [];
+    const videos = req.files["videos"]?.map(f => f.path) || [];
+
+    // Шинээр resort үүсгэх
+    const newResort = await Resort.create({
+      ...req.body,
+      images,
+      videos,
+    });
+
+    res.status(201).json({
+      success: true,
+      message: "Амжилттай нэмэгдлээ",
+      resort: newResort,
+    });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: error.message });
+    console.error("createResort алдаа:", error);
+    res.status(500).json({ success: false, message: error.message });
   }
 };
+
 

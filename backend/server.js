@@ -4,6 +4,8 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { v2 as cloudinary } from "cloudinary";
+import multer from "multer";
 
 // Local imports
 import connectDB from './src/config/db.js';
@@ -15,18 +17,19 @@ dotenv.config();
 
 const app = express();
 
-app.use(express.json());
-app.use(cors({
+const corsOptions = {
   origin: [
-    "https://amaralt-admin.vercel.app", // Admin панель
-    "https://amaralt.vercel.app"        // Public сайт
+    "https://amaralt-admin.vercel.app",
+    "https://amaralt.vercel.app"
   ],
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true,
-}));
-app.options("*", cors()); // бүх OPTIONS хүсэлтэнд CORS зөвшөөрнө
+};
 
+app.use(cors(corsOptions));
+app.options("*", cors(corsOptions)); // энэ мөрийг ингэж тодорхой болго
+app.use(express.json());
 
 // Cloudinary тохиргоо
 cloudinary.config({
@@ -35,6 +38,7 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
+const parser = multer({ dest: "uploads/" });
 
 // Файл upload endpoint
 app.post(
@@ -60,6 +64,7 @@ app.post(
         uploadedVideos.map((file) =>
           cloudinary.uploader.upload(file.path, {
             folder: "resorts",
+            resource_type: "video",
           })
         )
       );
@@ -106,3 +111,5 @@ const startServer = async () => {
 };
 
 startServer();
+
+export default app;

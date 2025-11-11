@@ -65,11 +65,12 @@ function Resorts() {
             className="bg-white rounded-xl shadow-sm hover:shadow-md transition p-3 flex flex-col"
           >
             <img
-                src={r.image}
-                alt={r.name}
-                className="w-full h-48 object-cover"
-                onError={(e) => (e.currentTarget.src = '/no-image.png')}
-              />
+  src={Array.isArray(r.image) ? r.image[0] : r.image}
+  alt={r.name}
+  className="w-full h-48 object-cover"
+  onError={(e) => (e.currentTarget.src = '/no-image.png')}
+/>
+
             <div className="flex-1">
               <div className="font-semibold text-lg text-gray-800 mb-1">
                 {r.name}

@@ -7,25 +7,27 @@ import { fileURLToPath } from 'url';
 import { v2 as cloudinary } from "cloudinary";
 import multer from "multer";
 
-// Local imports
 import connectDB from './src/config/db.js';
 import authRoutes from './src/routes/auth.js';
 import resortRoutes from "./src/routes/resorts.js";
 import fileRoutes from './src/routes/fileRoutes.js';
 
 dotenv.config();
+await connectDB(); // ⚠️ энэ мөрийг шууд await хэлбэрээр
 
 const app = express();
 
-app.use(cors({
-  origin: "https://amaralt-admin.vercel.app",
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  credentials: true
-}));
+// ✅ CORS тохиргоо
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "https://amaralt-admin.vercel.app");
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  res.header("Access-Control-Allow-Credentials", "true");
+  if (req.method === "OPTIONS") return res.sendStatus(200);
+  next();
+});
 
-// ✅ Preflight OPTIONS хариу
-app.options("*", cors());
-// Cloudinary тохиргоо
+// ✅ Cloudinary тохиргоо
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
@@ -34,7 +36,7 @@ cloudinary.config({
 
 const parser = multer({ dest: "uploads/" });
 
-// Файл upload endpoint
+// Upload route
 app.post(
   "/api/admin/upload",
   parser.fields([
@@ -46,14 +48,11 @@ app.post(
       const uploadedImages = req.files["images"] || [];
       const uploadedVideos = req.files["videos"] || [];
 
-      // Зураг upload хийх
       const imageUrls = await Promise.all(
         uploadedImages.map((file) =>
           cloudinary.uploader.upload(file.path, { folder: "resorts" })
         )
       );
-
-      // Видео upload хийх (resource_type = "video" заавал!)
       const videoUrls = await Promise.all(
         uploadedVideos.map((file) =>
           cloudinary.uploader.upload(file.path, {
@@ -63,47 +62,24 @@ app.post(
         )
       );
 
-      res.json({ images: imageUrls.map((r) => r.secure_url), videos: videoUrls.map((r) => r.secure_url) });
+      res.json({
+        images: imageUrls.map((r) => r.secure_url),
+        videos: videoUrls.map((r) => r.secure_url),
+      });
     } catch (error) {
+      console.error(error);
       res.status(500).json({ message: "Upload failed", error });
     }
   }
 );
 
-
-// __dirname тохиргоо
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-// API маршрутууд
-app.use('/api/admin/resorts', resortRoutes);
+// API routes
+app.use("/api/admin/resorts", resortRoutes);
 app.use("/api/admin/files", fileRoutes);
 app.use("/api/admin", authRoutes);
 
-// Алдаа барих middleware
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({ message: err.message });
+app.get("/", (req, res) => {
+  res.send("Backend server is running!");
 });
-
-// Root endpoint
-app.get('/', (req, res) => {
-  res.send('Backend server is running!');
-});
-
-const PORT = process.env.PORT || 5000;
-
-// Сервер эхлүүлэх
-const startServer = async () => {
-  try {
-    await connectDB();
-    app.listen(PORT, () => console.log(`✅ Server started on port ${PORT}`));
-  } catch (err) {
-    console.error("❌ MongoDB connection failed:", err);
-    process.exit(1);
-  }
-};
-
-startServer();
 
 export default app;

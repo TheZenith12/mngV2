@@ -29,34 +29,27 @@ const allowedOrigins = [
 
 app.use(cors({
   origin: (origin, callback) => {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error("❌ Not allowed by CORS"));
-    }
+    if (!origin || allowedOrigins.includes(origin)) callback(null, true);
+    else callback(new Error("❌ Not allowed by CORS"));
   },
   credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
 }));
+app.options("*", cors());
 
-app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "https://amaralt-admin.vercel.app");
-  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-  res.setHeader("Access-Control-Allow-Credentials", "true");
-  if (req.method === "OPTIONS") {
-    return res.sendStatus(200);
-  }
-  next();
-});
 
-// ✅ Cloudinary
+// ✅ OPTIONS preflight handler
+app.options("*", cors());
+
+// ✅ Cloudinary config
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-// ✅ Upload
+// ✅ Upload route
 app.post(
   "/api/admin/upload",
   upload.fields([
@@ -80,16 +73,16 @@ app.use("/api/admin", authRoutes);
 app.use("/api/admin/resorts", resortRoutes);
 app.use("/api/admin/files", fileRoutes);
 
-// ✅ Root
+// ✅ Root route
 app.get("/", (req, res) => {
-  res.send("✅ Backend server is running!");
+  res.send("✅ Backend server is running on Vercel!");
 });
 
 // ✅ Error handler
 app.use((err, req, res, next) => {
-  console.error("🔥 Error:", err.stack);
+  console.error("🔥 Error:", err.message);
   res.status(500).json({ message: err.message });
 });
 
-// ✅ Vercel export — зөвхөн нэг export л байх ёстой!
+// ⚠️ Vercel-д заавал зөв export хийх ёстой:
 export default serverless(app);

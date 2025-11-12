@@ -8,7 +8,7 @@ import resortRoutes from "./src/routes/resorts.js";
 import fileRoutes from "./src/routes/fileRoutes.js";
 
 dotenv.config();
-await connectDB(); // ⚠️ Vercel-ийн serverless орчинд async top-level зөвшөөрөгдсөн
+await connectDB();
 
 const app = express();
 app.use(express.json());

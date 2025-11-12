@@ -36,6 +36,18 @@ app.use(cors({
   credentials: true,
 }));
 
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "https://amaralt-admin.vercel.app");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  res.setHeader("Access-Control-Allow-Credentials", "true");
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(200);
+  }
+  next();
+});
+
+
 // ✅ Cloudinary тохиргоо
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,

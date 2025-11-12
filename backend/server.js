@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 import express from "express";
 import { v2 as cloudinary } from "cloudinary";
 import connectDB from "./src/config/db.js";
-import upload from "./src/middlewares/upload.js"; // multer-storage-cloudinary
+import upload from "./src/middleware/upload.js"; // multer-storage-cloudinary
 import authRoutes from "./src/routes/auth.js";
 import resortRoutes from "./src/routes/resorts.js";
 import fileRoutes from "./src/routes/fileRoutes.js";

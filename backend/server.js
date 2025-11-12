@@ -12,11 +12,13 @@ import serverless from "serverless-http";
 
 dotenv.config();
 
-// ✅ MongoDB холболт
-await connectDB();
 
 const app = express();
 app.use(express.json());
+
+connectDB().catch(err => {
+  console.error("❌ MongoDB connection error:", err);
+});
 
 // ✅ CORS тохиргоо
 const allowedOrigins = [
@@ -97,3 +99,4 @@ app.use((err, req, res, next) => {
 
 // ✅ Vercel-д зориулсан handler export
 export const handler = serverless(app);   
+export default app;

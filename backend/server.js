@@ -17,26 +17,11 @@ dotenv.config();
 
 const app = express();
 
-const allowedOrigins = [
-  "https://amaralt-admin.vercel.app",
-  "https://amaralt.vercel.app"
-];
-
-app.use(
-  cors({
-    origin: function (origin, callback) {
-      // Local dev үед origin null байж болох тул зөвшөөрнө
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("CORS not allowed"));
-      }
-    },
-    credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-  })
-);
+app.use(cors({
+  origin: "https://amaralt-admin.vercel.app",
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true
+}));
 
 // ✅ Preflight OPTIONS хариу
 app.options("*", cors());

@@ -19,9 +19,21 @@ const app = express();
 app.use(express.json());
 
 // ✅ CORS тохиргоо
+const allowedOrigins = [
+  "https://amaralt-admin.vercel.app",
+  "https://amaralt.vercel.app",
+  "http://localhost:5173" // local dev
+];
+
 app.use(cors({
-  origin: "https://amaralt-admin.vercel.app", // зөвшөөрөх frontend origin
-  credentials: true, // cookies хэрэглэх бол
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("❌ Not allowed by CORS"));
+    }
+  },
+  credentials: true,
 }));
 
 // ✅ Cloudinary тохиргоо
@@ -72,4 +84,4 @@ app.use((err, req, res, next) => {
 });
 
 // ✅ Vercel-д зориулсан handler export
-export const handler = serverless(app);
+export const handler = serverless(app);   

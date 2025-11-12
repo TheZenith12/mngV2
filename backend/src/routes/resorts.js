@@ -1,7 +1,7 @@
 import express from "express";
 import Resort from "../models/resortModel.js";
 import File from "../models/fileModel.js";
-import upload from "../middlewares/upload.js"; // Cloudinary upload middleware
+import upload from "../middleware/upload.js"; // Cloudinary upload middleware
 import {
   getResorts,
   getResortById,

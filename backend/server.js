@@ -19,32 +19,16 @@ const app = express();
 app.use(express.json());
 
 // ✅ CORS тохиргоо
-const allowedOrigins = [
-  "https://amaralt-admin.vercel.app",
-  "https://amaralt.vercel.app",
-];
-app.use((req, res, next) => {
-  const origin = req.headers.origin;
-  if (allowedOrigins.includes(origin)) {
-    res.header("Access-Control-Allow-Origin", origin);
-  }
-  res.header("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
-  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
-  res.header("Access-Control-Allow-Credentials", "true");
-  if (req.method === "OPTIONS") return res.sendStatus(200);
-  next();
-});
+app.use(cors({
+  origin: "https://amaralt-admin.vercel.app", // зөвшөөрөх frontend origin
+  credentials: true, // cookies хэрэглэх бол
+}));
 
 // ✅ Cloudinary тохиргоо
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
-});
-
-// ✅ Жишээ route
-app.get('/api/hello', (req, res) => {
-  res.json({ message: 'Hello from Vercel Serverless!' });
 });
 
 // ✅ Upload route

@@ -6,6 +6,7 @@ import upload from "./src/middleware/upload.js"; // multer-storage-cloudinary
 import authRoutes from "./src/routes/auth.js";
 import resortRoutes from "./src/routes/resorts.js";
 import fileRoutes from "./src/routes/fileRoutes.js";
+import serverless from "serverless-http";
 
 dotenv.config();
 await connectDB();

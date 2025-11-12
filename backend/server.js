@@ -11,6 +11,8 @@ import fileRoutes from "./src/routes/fileRoutes.js";
 import serverless from "serverless-http";
 
 dotenv.config();
+
+// ✅ MongoDB холболт
 await connectDB();
 
 const app = express();
@@ -85,5 +87,5 @@ app.use((err, req, res, next) => {
   res.status(500).json({ message: err.message });
 });
 
-// ✅ Vercel-д зориулсан serverless export (1 удаа)
+// ✅ Vercel-д зориулсан handler export
 export const handler = serverless(app);

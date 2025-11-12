@@ -1,5 +1,7 @@
 import dotenv from "dotenv";
 import express from "express";
+import mongoose from "mongoose";
+import cors from "cors";
 import { v2 as cloudinary } from "cloudinary";
 import connectDB from "./src/config/db.js";
 import upload from "./src/middleware/upload.js"; // multer-storage-cloudinary
@@ -38,7 +40,12 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-// ✅ Upload route (Cloudinary storage ашиглана)
+// ✅ Жишээ route
+app.get('/api/hello', (req, res) => {
+  res.json({ message: 'Hello from Vercel Serverless!' });
+});
+
+// ✅ Upload route
 app.post(
   "/api/admin/upload",
   upload.fields([
@@ -47,7 +54,6 @@ app.post(
   ]),
   async (req, res) => {
     try {
-      // multer-storage-cloudinary нь Cloudinary-д upload хийсний дараа file.path = secure_url хэлбэртэй ирдэг
       const images = (req.files["images"] || []).map(
         (f) => f.path || f.secure_url || f.url
       );
@@ -55,13 +61,10 @@ app.post(
         (f) => f.path || f.secure_url || f.url
       );
 
-      // Хариу буцаах
       res.json({ images, videos });
     } catch (err) {
       console.error("❌ Upload failed:", err);
-      res
-        .status(500)
-        .json({ message: "Upload failed", error: err.message || err });
+      res.status(500).json({ message: "Upload failed", error: err.message || err });
     }
   }
 );
@@ -82,5 +85,5 @@ app.use((err, req, res, next) => {
   res.status(500).json({ message: err.message });
 });
 
-// Export as serverless function
-export default serverless(app);
+// ✅ Vercel-д зориулсан serverless export (1 удаа)
+export const handler = serverless(app);

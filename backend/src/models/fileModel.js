@@ -1,16 +1,10 @@
 import mongoose from "mongoose";
 
-const fileSchema = new mongoose.Schema(
-  {
-    resortsId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Resort",
-      required: true,
-    },
-    images: [String],
-    videos: [String],
-  },
-  { timestamps: true }
-);
+const fileSchema = new mongoose.Schema({
+  resortId: { type: mongoose.Schema.Types.ObjectId, ref: "Resort", required: true },
+  images: [String],
+  videos: [String],
+  createdAt: { type: Date, default: Date.now },
+});
 
-export default mongoose.model("Files", fileSchema);
+export default mongoose.model("File", fileSchema);
